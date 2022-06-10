@@ -1,0 +1,51 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: youngmki <youngmki@student.42seoul.kr>     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/02/24 16:03:35 by youngmki          #+#    #+#              #
+#    Updated: 2022/02/24 16:03:36 by youngmki         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME = get_next_line.a
+
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
+
+SRCS =			get_next_line.c\
+				get_next_line_utils.c
+SRCS_BONUS =	get_next_line_bonus.c\
+				get_next_line_utils_bonus.c
+
+OBJS = $(SRCS:.c=.o)
+OBJS_BONUS = $(SRCS_BONUS:.c=.o)
+
+ifdef BONUS_INCLUDE
+	OBJS_FILE = $(OBJS_BONUS)
+else
+	OBJS_FILE = $(OBJS)
+endif
+
+all: $(NAME)
+
+$(NAME): $(OBJS_FILE)
+	ar rc $@ $^
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+bonus:
+	@make BONUS_INCLUDE=1 all
+
+clean:
+	@rm -f $(OBJS) $(OBJS_BONUS)
+
+fclean: clean
+	@rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all bonus clean fclean re
